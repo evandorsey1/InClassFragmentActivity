@@ -18,16 +18,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+
+
         //if(::someVar.isInitialized)
 
 
-        //val mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        val imagesViewModel = ViewModelProvider(this)[ImagesViewModel::class.java]
 
 
         // Fetch images into IntArray called imageArray
         val typedArray = resources.obtainTypedArray(R.array.image_ids)
         val imageArray = IntArray(typedArray.length()) {typedArray.getResourceId(it, 0)}
         typedArray.recycle()
+
+        imagesViewModel.setImages(imageArray)
+
 
         val myButton = findViewById<Button>(R.id.button)
 
