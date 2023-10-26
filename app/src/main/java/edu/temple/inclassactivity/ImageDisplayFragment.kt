@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,9 +20,7 @@ class ImageDisplayFragment : Fragment() {
     private lateinit var images: IntArray
 
 
-    fun setImages(_images : IntArray){
-        images = _images
-    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +45,23 @@ class ImageDisplayFragment : Fragment() {
         // The recycler view is the root element of the Fragment's layout
         // as such the view argument passed to onViewCreated() is the RecyclerView
         with (view as RecyclerView) {
+
+            ViewModelProvider(requireActivity())[ImagesViewModel::class.java]
+                .getImages().observe(requireActivity()){
+                    adapter = CustomRecyclerAdapter(it)
+                }
+
+
+
             if (::images.isInitialized) {
                 adapter = CustomRecyclerAdapter(images)
             }
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
+    }
+
+    fun setImages(_images : IntArray){
+        images = _images
     }
 
     companion object {
